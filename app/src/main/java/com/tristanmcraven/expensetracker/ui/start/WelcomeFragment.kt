@@ -12,7 +12,7 @@ import com.tristanmcraven.expensetracker.databinding.FragmentWelcomeBinding
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class WelcomeFragment : Fragment() {
 
     private var _binding: FragmentWelcomeBinding? = null
 
@@ -33,8 +33,8 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        binding.buttonStart.setOnClickListener {
+            findNavController().navigate(R.id.action_WelcomeFragment_to_NameFragment)
         }
     }
 

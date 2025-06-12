@@ -68,4 +68,19 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="expense_tracker">Expense Tracker</string>
+    <string name="welcome_fragment_label">Welcome Fragment</string>
+    <string name="name_fragment_label">Name Fragment</string>
+    <string name="expense_tracker_description">Easy way to track and manage your expenses</string>
+    <string name="start">Start</string>
+    <string name="app_icon">App Icon</string>
+    <string name="welcome_exclamation">Welcome!</string>
+    <string name="how_should_i_call_you">How should i call you?</string>
+    <string name="select_currency_fragment_label">Select Currency Fragment</string>
+    <string name="avatar_fragment_label">Avatar Fragment</string>
+    <string name="add_accounts_fragment_label">Add Accounts Fragment</string>
+    <string name="use_swipe_gestures_to_navigate">Use swipe gestures to navigate</string>
+    <string name="add_avatar">Add Avatar</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="let_s_upload_your_profile_picture">Let\'s upload your profile picture</string>
 </resources>

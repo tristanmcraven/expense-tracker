@@ -12,7 +12,7 @@ import com.tristanmcraven.expensetracker.databinding.FragmentNameBinding
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class NameFragment : Fragment() {
 
     private var _binding: FragmentNameBinding? = null
 
@@ -33,13 +33,14 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        binding.buttonNext.setOnClickListener {
+            findNavController().navigate(R.id.action_NameFragment_to_AvatarFragment)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
     }
 }

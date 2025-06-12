@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/start_navigation"
+    app:startDestination="@id/WelcomeFragment">
+
+    <fragment
+        android:id="@+id/WelcomeFragment"
+        android:name="com.tristanmcraven.expensetracker.ui.start.WelcomeFragment"
+        android:label="@string/welcome_fragment_label"
+        tools:layout="@layout/fragment_welcome">
+
+        <action
+            android:id="@+id/action_WelcomeFragment_to_NameFragment"
+            app:destination="@id/NameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/NameFragment"
+        android:name="com.tristanmcraven.expensetracker.ui.start.NameFragment"
+        android:label="@string/name_fragment_label"
+        tools:layout="@layout/fragment_name">
+
+        <action
+            android:id="@+id/action_NameFragment_to_AvatarFragment"
+            app:destination="@id/AvatarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AvatarFragment"
+        android:name="com.tristanmcraven.expensetracker.ui.start.AvatarFragment"
+        android:label="@string/avatar_fragment_label"
+        tools:layout="@layout/fragment_avatar">
+
+        <action
+            android:id="@+id/action_AvatarFragment_to_AddAccountsFragment"
+            app:destination="@id/AddAccountsFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddAccountsFragment"
+        android:name="com.tristanmcraven.expensetracker.ui.start.AddAccountsFragment"
+        android:label="@string/add_accounts_fragment_label"
+        tools:layout="@layout/fragment_add_accounts">
+
+        <action
+            android:id="@+id/action_AddAccountsFragment_to_SelectCurrencyFragment"
+            app:destination="@id/SelectCurrencyFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/SelectCurrencyFragment"
+        android:name="com.tristanmcraven.expensetracker.ui.start.SelectCurrencyFragment"
+        android:label="@string/select_currency_fragment_label"
+        tools:layout="@layout/fragment_select_currency">
+
+    </fragment>
+</navigation>
