@@ -5,20 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.tristanmcraven.expensetracker.R
 import com.tristanmcraven.expensetracker.databinding.FragmentNameBinding
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 class NameFragment : Fragment() {
 
     private var _binding: FragmentNameBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private val viewModel: StartViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +33,10 @@ class NameFragment : Fragment() {
 
         binding.buttonNext.setOnClickListener {
             findNavController().navigate(R.id.action_NameFragment_to_AvatarFragment)
+        }
+        binding.editTextName.doAfterTextChanged { editable ->
+            val name = editable.toString().trim()
+            viewModel.setUserFirstName(name)
         }
     }
 

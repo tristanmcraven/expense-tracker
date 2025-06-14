@@ -83,4 +83,15 @@
     <string name="add_avatar">Add Avatar</string>
     <string name="profile_picture">Profile Picture</string>
     <string name="let_s_upload_your_profile_picture">Let\'s upload your profile picture</string>
+    <string name="accounts">Accounts</string>
+    <string name="added_accounts">Added accounts</string>
+    <string name="all_accounts">All accounts</string>
+    <string name="select_accounts">Select accounts to track expenses. (You can change this later)</string>
+    <string name="cash">Cash</string>
+    <string name="card">Card</string>
+    <string name="crypto">Crypto</string>
+    <string name="currency_icon">Currency Icon</string>
+    <string name="select_main_currency">Select main currency</string>
+    <string name="currencies">Currencies</string>
+    <string name="select_secondary_currencies">Select secondary currencies</string>
 </resources>

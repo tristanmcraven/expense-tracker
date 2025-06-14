@@ -7,6 +7,65 @@
     android:layout_height="match_parent"
     tools:context=".ui.start.AddAccountsFragment">
 
+    <TextView
+        android:id="@+id/textViewAccounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/accounts"
+        
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    
+    <TextView
+        android:id="@+id/textViewSelectAccounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_accounts"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewAccounts"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupSelectedAccounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:selectionRequired="true"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSelectAccounts">
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            style="@style/Widget.Material3.Chip.Filter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/cash"-->
+<!--            app:checkedIconVisible="false"-->
+
+<!--            app:chipIconEnabled="true"-->
+<!--            app:chipIcon="@drawable/cash"/>-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            style="@style/Widget.Material3.Chip.Filter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/card"-->
+<!--            app:checkedIconVisible="false"-->
+
+<!--            app:chipIconEnabled="true"-->
+<!--            app:chipIcon="@drawable/card"/>-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            style="@style/Widget.Material3.Chip.Filter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/crypto"-->
+<!--            app:checkedIconVisible="false"-->
+
+<!--            app:chipIconEnabled="true"-->
+<!--            app:chipIcon="@drawable/crypto"/>-->
+
+    </com.google.android.material.chip.ChipGroup>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

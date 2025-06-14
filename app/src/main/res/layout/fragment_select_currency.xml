@@ -7,6 +7,62 @@
     android:layout_height="match_parent"
     tools:context=".ui.start.SelectCurrencyFragment">
 
+    <ImageView
+        android:id="@+id/imageViewCurrency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/not_found"
+        android:contentDescription="@string/currency_icon"
+        android:backgroundTint="@color/teal_200"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewCurrency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/currencies"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewCurrency"/>
+
+    <TextView
+        android:id="@+id/textViewSelectMainCurrency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_main_currency"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewCurrency"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupPrimaryCurrency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:selectionRequired="true"
+        app:singleSelection="true"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSelectMainCurrency"/>
+
+    <TextView
+        android:id="@+id/textViewSelectSecondaryCurrencies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_secondary_currencies"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chipGroupPrimaryCurrency"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupSecondaryCurrencies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSelectSecondaryCurrencies"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
