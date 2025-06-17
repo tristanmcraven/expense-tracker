@@ -54,5 +54,16 @@
         android:label="@string/select_currency_fragment_label"
         tools:layout="@layout/fragment_select_currency">
 
+        <action
+            android:id="@+id/action_SelectCurrencyFragment_to_SavingFragment"
+            app:destination="@id/SavingFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/SavingFragment"
+        android:name="com.tristanmcraven.expensetracker.ui.start.SavingFragment"
+        android:label="@string/saving_fragment_label"
+        tools:layout="@layout/fragment_saving">
+
     </fragment>
 </navigation>

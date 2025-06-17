@@ -1,6 +1,9 @@
+import com.android.build.gradle.internal.utils.KSP_PLUGIN_ID
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
 }
 
 android {
@@ -49,8 +52,12 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.preference)
-
     implementation(libs.flexbox)
+
+    implementation(libs.room)
+    implementation(libs.room.ktx)
+    implementation(libs.androidx.activity)
+    kapt(libs.kapt)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.tristanmcraven.expensetracker.R
@@ -42,7 +43,9 @@ class SelectCurrencyFragment : Fragment() {
             createChip(chipText, binding.chipGroupSecondaryCurrencies, false)
         }
 
-        binding.buttonNext
+        binding.buttonNext.setOnClickListener {
+            findNavController().navigate(R.id.action_SelectCurrencyFragment_to_SavingFragment)
+        }
     }
 
     private fun createChip(displayText: String, parent: ChipGroup, single: Boolean) {

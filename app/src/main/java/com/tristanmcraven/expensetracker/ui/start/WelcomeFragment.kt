@@ -9,15 +9,9 @@ import androidx.navigation.fragment.findNavController
 import com.tristanmcraven.expensetracker.R
 import com.tristanmcraven.expensetracker.databinding.FragmentWelcomeBinding
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class WelcomeFragment : Fragment() {
 
     private var _binding: FragmentWelcomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(

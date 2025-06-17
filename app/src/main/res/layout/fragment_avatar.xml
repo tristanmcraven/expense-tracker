@@ -10,7 +10,7 @@
         android:id="@+id/imageViewAddAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:src="@tools:sample/avatars"
+        android:src="@drawable/not_found"
         android:contentDescription="@string/add_avatar"
 
         app:layout_constraintStart_toStartOf="parent"
