@@ -11,5 +11,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val transactionDao = (application as ExpenseTrackerApp).db.transactionDao()
 
-    val transactionFlow: Flow<List<Transaction>> = transactionDao.get()
+    val transactionFlow: Flow<List<Transaction>> = transactionDao.getDescending()
 }

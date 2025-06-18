@@ -3,7 +3,7 @@ package com.tristanmcraven.expensetracker.utility
 import com.tristanmcraven.expensetracker.R
 
 object UiUtility {
-    fun getChipIcon(account: String): Int = when (account) {
+    fun getChipIcon(text: String): Int = when (text) {
         "cash" -> R.drawable.cash
         "card" -> R.drawable.card
         "crypto" -> R.drawable.crypto

@@ -56,6 +56,9 @@ class SavingFragment : Fragment() {
             if (db.currencyDao().get().first().isEmpty()) {
                 SeedData.currencies.forEach { db.currencyDao().insert(it) }
             }
+            if (db.transactionTypeDao().get().first().isEmpty()) {
+                SeedData.transactionTypes.forEach { db.transactionTypeDao().insert(it) }
+            }
 
             // add profile info
             val name = viewModel.userFirstName.value.orEmpty()

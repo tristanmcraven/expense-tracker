@@ -7,6 +7,7 @@ import com.tristanmcraven.expensetracker.dao.CurrencyDao
 import com.tristanmcraven.expensetracker.dao.ProfileInfoDao
 import com.tristanmcraven.expensetracker.dao.SettingsDao
 import com.tristanmcraven.expensetracker.dao.TransactionDao
+import com.tristanmcraven.expensetracker.dao.TransactionTypeDao
 import com.tristanmcraven.expensetracker.dao.UserAccountsDao
 import com.tristanmcraven.expensetracker.dao.UserSecondaryCurrenciesDao
 import com.tristanmcraven.expensetracker.model.Account
@@ -14,6 +15,7 @@ import com.tristanmcraven.expensetracker.model.Currency
 import com.tristanmcraven.expensetracker.model.ProfileInfo
 import com.tristanmcraven.expensetracker.model.Settings
 import com.tristanmcraven.expensetracker.model.Transaction
+import com.tristanmcraven.expensetracker.model.TransactionType
 import com.tristanmcraven.expensetracker.model.UserAccounts
 import com.tristanmcraven.expensetracker.model.UserSecondaryCurrencies
 
@@ -24,10 +26,11 @@ import com.tristanmcraven.expensetracker.model.UserSecondaryCurrencies
        ProfileInfo::class,
        Settings::class,
        Transaction::class,
+       TransactionType::class,
        UserAccounts::class,
        UserSecondaryCurrencies::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDb : RoomDatabase() {
@@ -36,6 +39,7 @@ abstract class AppDb : RoomDatabase() {
     abstract fun profileInfoDao(): ProfileInfoDao
     abstract fun settingsDao(): SettingsDao
     abstract fun transactionDao(): TransactionDao
+    abstract fun transactionTypeDao(): TransactionTypeDao
     abstract fun userAccountsDao(): UserAccountsDao
     abstract fun userSecondaryCurrenciesDao(): UserSecondaryCurrenciesDao
 }

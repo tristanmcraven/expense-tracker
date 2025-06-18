@@ -13,6 +13,9 @@ interface TransactionDao {
     @Query("SELECT * FROM `transaction`")
     fun get(): Flow<List<Transaction>>
 
+    @Query("SELECT * FROM `transaction` ORDER BY timestamp DESC")
+    fun getDescending(): Flow<List<Transaction>>
+
     @Query("SELECT * FROM `transaction` WHERE id = :id")
     fun getById(id: Int): Flow<Transaction>
 

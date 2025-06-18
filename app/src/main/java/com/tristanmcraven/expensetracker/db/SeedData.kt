@@ -3,6 +3,7 @@ package com.tristanmcraven.expensetracker.db
 import com.tristanmcraven.expensetracker.R
 import com.tristanmcraven.expensetracker.model.Account
 import com.tristanmcraven.expensetracker.model.Currency
+import com.tristanmcraven.expensetracker.model.TransactionType
 
 object SeedData {
     val currencies = listOf(
@@ -15,5 +16,10 @@ object SeedData {
         Account(1, "Cash",   R.drawable.cash),
         Account(2, "Card",   R.drawable.card),
         Account(3, "Crypto", R.drawable.crypto)
+    )
+
+    val transactionTypes = listOf(
+        TransactionType(1, "Income"),
+        TransactionType(2, "Expense")
     )
 }
