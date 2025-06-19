@@ -5,19 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tristanmcraven.expensetracker.AddTransactionActivity
-import com.tristanmcraven.expensetracker.R
 import com.tristanmcraven.expensetracker.adapter.TransactionAdapter
 import com.tristanmcraven.expensetracker.databinding.FragmentHomeBinding
+import com.tristanmcraven.expensetracker.utility.GroupBy
 import com.tristanmcraven.expensetracker.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -25,7 +24,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val vm: MainViewModel by activityViewModels()
     private lateinit var adapter: TransactionAdapter
 
     override fun onCreateView(
@@ -46,6 +45,22 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), AddTransactionActivity::class.java)
             startActivity(intent)
         }
+        binding.buttonGroupTransactions.setOnClickListener {
+            val options = GroupBy.values().map {
+                it.name.lowercase().replaceFirstChar(Char::uppercase)
+            }.toTypedArray()
+            val currentOption = vm.groupBy.value.ordinal
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Group by:")
+                .setSingleChoiceItems(options, currentOption) { dialog, which ->
+                    vm.setGrouping(GroupBy.values()[which])
+                    dialog.dismiss()
+                }
+
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
     }
 
     private fun setupTransactionsRecyclerView() {
@@ -54,8 +69,18 @@ class HomeFragment : Fragment() {
         binding.recyclerViewTransactions.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.transactionFlow.collectLatest { list ->
-                adapter.submitList(list)
+            combine(
+               vm.transactionFlow,
+               vm.groupBy
+            ) { transactions, gb -> Pair(transactions, gb) }
+                .collect { (transactions, gb) ->
+                    adapter.submitTransactions(transactions, gb)
+                }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            vm.groupBy.collectLatest { gb ->
+                binding.buttonGroupTransactions.text =
+                    gb.name.lowercase().replaceFirstChar(Char::uppercase)
             }
         }
     }

@@ -111,4 +111,5 @@
     <string name="select_account">Select Account</string>
     <string name="add">Add</string>
     <string name="add_transaction">Add transaction</string>
+    <string name="group_by">Group By:</string>
 </resources>
