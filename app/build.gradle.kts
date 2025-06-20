@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.androidx.activity)
     kapt(libs.kapt)
+    implementation(libs.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
