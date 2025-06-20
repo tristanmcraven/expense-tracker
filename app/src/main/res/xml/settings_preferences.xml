@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="Data">
+
+        <SwitchPreferenceCompat
+            android:title="Nigger" />
+
+        <Preference
+            android:key="pref_data_import"
+            android:title="@string/data_import_beta"
+            android:summary="@string/import_raw_json_data"
+            android:icon="@drawable/not_found"
+            android:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

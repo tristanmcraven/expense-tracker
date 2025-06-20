@@ -22,4 +22,19 @@
         android:name="com.tristanmcraven.expensetracker.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.tristanmcraven.expensetracker.ui.settings.SettingsFragment"
+        android:label="@string/settings">
+        <action
+            android:id="@+id/action_SettingsFragment_to_ImportDataFragment"
+            app:destination="@id/ImportDataFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/ImportDataFragment"
+        android:name="com.tristanmcraven.expensetracker.ui.settings.ImportDataFragment"
+        android:label="@string/import_data"
+        tools:layout="@layout/fragment_import_data"/>
 </navigation>
