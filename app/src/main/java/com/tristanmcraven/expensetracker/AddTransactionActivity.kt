@@ -4,7 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.widget.TimePicker
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -12,24 +12,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.datepicker.MaterialStyledDatePickerDialog
 import com.tristanmcraven.expensetracker.databinding.ActivityAddTransactionBinding
+import com.tristanmcraven.expensetracker.model.UserAccounts
 import com.tristanmcraven.expensetracker.utility.UiUtility
 import com.tristanmcraven.expensetracker.viewmodel.AddTransactionViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddTransactionActivity : AppCompatActivity() {
 
     private var _binding: ActivityAddTransactionBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: AddTransactionViewModel by viewModels()
+    private val vm: AddTransactionViewModel by viewModels()
+
+    private lateinit var userAccounts: List<UserAccounts>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +51,20 @@ class AddTransactionActivity : AppCompatActivity() {
             insets
         }
 
-        initViews()
+        val transactionId = intent.getIntExtra("TX_ID", -666)
+        if (transactionId != -666) {
+            vm.loadTransaction(transactionId)
+            vm.loaded.observe(this) {
+                if (it) {
+                    initAsEditing()
+                    initViews()
+                }
+            }
+        } else {
+            initViews()
+        }
+
+
     }
 
     private fun initViews() {
@@ -55,12 +75,27 @@ class AddTransactionActivity : AppCompatActivity() {
         initClickListeners()
     }
 
+    private fun initAsEditing() {
+        binding.buttonAdd.text = "Update transaction"
+        binding.textViewAddTransaction.text = "Update existing transaction"
+        binding.editTextTransactionName.setText(vm.name.value)
+        binding.editTextTransactionAmount.setText(kotlin.math.abs(vm.amount.value ?: 100.0).toString())
+        binding.editTextTransactionDescription.setText(vm.description.value)
+        vm.dateAsString.observe(this@AddTransactionActivity) { binding.buttonSelectDate.text = it }
+        vm.timeAsString.observe(this@AddTransactionActivity) { binding.buttonSelectTime.text = it }
+    }
+
     private fun initClickListeners() {
         binding.buttonAdd.setOnClickListener {
             lifecycleScope.launch {
-                val transaction = viewModel.transactionObject
-                (application as ExpenseTrackerApp).db.transactionDao().insert(transaction)
-                Toast.makeText(this@AddTransactionActivity, "Added", Toast.LENGTH_SHORT).show()
+                val transaction = vm.transactionObject
+                if (vm.isEditing.value == true) {
+                    (application as ExpenseTrackerApp).db.transactionDao().update(transaction)
+                    Toast.makeText(this@AddTransactionActivity, "Updated", Toast.LENGTH_SHORT).show()
+                } else {
+                    (application as ExpenseTrackerApp).db.transactionDao().insert(transaction)
+                    Toast.makeText(this@AddTransactionActivity, "Added", Toast.LENGTH_SHORT).show()
+                }
                 finish()
             }
         }
@@ -68,19 +103,20 @@ class AddTransactionActivity : AppCompatActivity() {
 
     private fun initNotifications() {
         binding.editTextTransactionName.doAfterTextChanged {
-            viewModel.setName(it.toString().trim())
+            vm.setName(it.toString().trim())
         }
         binding.editTextTransactionAmount.doAfterTextChanged {
-            viewModel.setAmount(it.toString().trim())
+            vm.setAmount(it.toString().trim())
         }
         binding.editTextTransactionDescription.doAfterTextChanged {
-            viewModel.setDescription(it.toString().trim())
+            vm.setDescription(it.toString().trim())
         }
     }
 
     private fun initAccountChips() {
         lifecycleScope.launch {
-            viewModel.userAccounts.first().forEach { uAcc ->
+            userAccounts = vm.userAccounts.first()
+            userAccounts.forEach { uAcc ->
                 createUserAccountChip(when (uAcc.accountId) {
                     1 -> "Cash"
                     2 -> "Card"
@@ -93,7 +129,7 @@ class AddTransactionActivity : AppCompatActivity() {
 
     private fun initTransactionTypeChips() {
         lifecycleScope.launch {
-            viewModel.transactionTypes.first().forEach { tType ->
+            vm.transactionTypes.first().forEach { tType ->
                 createTransactionTypeChip(tType.name, tType.id, binding.chipGroupTransactionType)
             }
         }
@@ -106,12 +142,14 @@ class AddTransactionActivity : AppCompatActivity() {
             text = displayText
             chipIcon = ContextCompat.getDrawable(this@AddTransactionActivity, UiUtility.getChipIcon(displayText))
             tag = id
-            isChecked = viewModel.selectedAccountId.value == tag
+            isChecked = vm.selectedAccountId.value == tag
             setOnCheckedChangeListener{ _, isChecked ->
-                viewModel.setSelectedAccountId(tag.toString().toInt())
+                vm.setSelectedAccountId(tag.toString().toInt())
             }
         }
-        chip.performClick()
+        if (vm.isEditing.value == false && userAccounts.count() == chip.tag.toString().toInt()) {
+            chip.performClick()
+        }
         parent.addView(chip)
     }
 
@@ -122,20 +160,21 @@ class AddTransactionActivity : AppCompatActivity() {
             text = displayText
             chipIcon = ContextCompat.getDrawable(this@AddTransactionActivity, UiUtility.getChipIcon(displayText))
             tag = id
-            isChecked = viewModel.selectedTransactionTypeId.value == tag
+            isChecked = vm.selectedTransactionTypeId.value == tag
             setOnCheckedChangeListener{ _, isChecked ->
-                viewModel.setSelectedTransactionTypeId(tag.toString().toInt())
+                vm.setSelectedTransactionTypeId(tag.toString().toInt())
             }
         }
-        if (chip.tag.toString().toInt() == 1) chip.performClick()
+        if (vm.isEditing.value == false && chip.tag.toString().toInt() == 1) chip.performClick()
+
         parent.addView(chip)
     }
 
     private fun initDateTimePickers() {
-        viewModel.dateAsString.observe(this@AddTransactionActivity) {
+        vm.dateAsString.observe(this@AddTransactionActivity) {
             binding.buttonSelectDate.text = it
         }
-        viewModel.timeAsString.observe(this@AddTransactionActivity) {
+        vm.timeAsString.observe(this@AddTransactionActivity) {
             binding.buttonSelectTime.text = it
         }
         binding.buttonSelectDate.setOnClickListener {
@@ -145,7 +184,7 @@ class AddTransactionActivity : AppCompatActivity() {
                 this,
                 { _, year, month, dayOfMonth ->
                     calendar.set(year, month, dayOfMonth)
-                    viewModel.setDate(calendar.timeInMillis)
+                    vm.setDate(calendar.timeInMillis)
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -162,7 +201,7 @@ class AddTransactionActivity : AppCompatActivity() {
                 this,
                 { _, hours, minute ->
                     calendar.set(hours, minute)
-                    viewModel.setTime(calendar.timeInMillis)
+                    vm.setTime(calendar.timeInMillis)
                 },
                 calendar.get(Calendar.HOUR),
                 calendar.get(Calendar.MINUTE),
@@ -172,5 +211,4 @@ class AddTransactionActivity : AppCompatActivity() {
             timePicker.show()
         }
     }
-
 }

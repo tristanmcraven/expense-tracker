@@ -1,10 +1,14 @@
 package com.tristanmcraven.expensetracker.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.tristanmcraven.expensetracker.AddTransactionActivity
 import com.tristanmcraven.expensetracker.R
 import com.tristanmcraven.expensetracker.databinding.ItemGroupedTransactionsHeaderBinding
 import com.tristanmcraven.expensetracker.databinding.ItemTransactionBinding
@@ -15,8 +19,9 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class TransactionAdapter :
-    ListAdapter<TransactionListItem, RecyclerView.ViewHolder>(DIFF) {
+class TransactionAdapter(
+    private val onItemClick: (Transaction) -> Unit
+) : ListAdapter<TransactionListItem, RecyclerView.ViewHolder>(DIFF) {
 
     companion object {
         private val DIFF = object : DiffUtil.ItemCallback<TransactionListItem>() {
@@ -142,6 +147,9 @@ class TransactionAdapter :
                 binding.textViewCategoryName.text = context.getString(R.string.category)
                 binding.textViewDate.text = tx.dateString
                 binding.textViewTime.text = tx.timeString
+                binding.root.setOnClickListener {
+                    onItemClick(tx)
+                }
             }
         }
 }

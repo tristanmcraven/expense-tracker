@@ -64,7 +64,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupTransactionsRecyclerView() {
-        adapter = TransactionAdapter()
+        adapter = TransactionAdapter { tx ->
+            val intent = Intent(requireContext(), AddTransactionActivity::class.java)
+            intent.putExtra("TX_ID", tx.id)
+            startActivity(intent)
+        }
         binding.recyclerViewTransactions.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewTransactions.adapter = adapter
 

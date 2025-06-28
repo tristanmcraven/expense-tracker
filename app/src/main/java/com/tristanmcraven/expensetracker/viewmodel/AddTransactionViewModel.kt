@@ -3,14 +3,24 @@ package com.tristanmcraven.expensetracker.viewmodel
 import android.app.Application
 import android.icu.util.Calendar
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.tristanmcraven.expensetracker.ExpenseTrackerApp
 import com.tristanmcraven.expensetracker.model.Transaction
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class AddTransactionViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val db = (application as ExpenseTrackerApp).db
+    val transactionDao = db.transactionDao()
 
     private val _transactionTypes = (application as ExpenseTrackerApp).db.transactionTypeDao()
     val transactionTypes get() = _transactionTypes.get()
@@ -93,12 +103,41 @@ class AddTransactionViewModel(application: Application) : AndroidViewModel(appli
         return merged.timeInMillis
     }
 
+    /* Editing Logic */
+
+    private val _isEditing = MutableLiveData(false)
+    val isEditing: LiveData<Boolean> get() = _isEditing
+
+    private val _transactionId = MutableLiveData<Int?>(null)
+    val transactionId: LiveData<Int?> get() = _transactionId
+
+    var loaded = MutableLiveData(false) // check if transaction has loaded
+
+    fun loadTransaction(id: Int) = viewModelScope.launch {
+        val tx = withContext(Dispatchers.IO) { transactionDao.getById(id).first() } ?: return@launch
+
+        withContext(Dispatchers.Main) {
+            _isEditing.value = true
+            _transactionId.value = tx.id
+
+            setName(tx.name ?: "")
+            setSelectedTransactionTypeId(if (tx.amount < 0) 2 else 1)
+            setAmount(kotlin.math.abs(tx.amount).toString())
+            setDescription(tx.description ?: "")
+            setDate(tx.timestamp)
+            setTime(tx.timestamp)
+            setSelectedAccountId(tx.accountId)
+
+            loaded.value = true
+        }
+    }
+
     val transactionObject get() =
         Transaction(
-            0,
+            _transactionId.value ?: 0,
             _name.value,
             _amount.value?.let {
-                if (_selectedTransactionTypeId.value == 2) -it else it
+                if (_selectedTransactionTypeId.value == 2) -kotlin.math.abs(it) else it
             } ?: if (_selectedTransactionTypeId.value == 2) -100.0 else 100.0,
             _description.value,
             timestamp ?: Calendar.getInstance().timeInMillis,
