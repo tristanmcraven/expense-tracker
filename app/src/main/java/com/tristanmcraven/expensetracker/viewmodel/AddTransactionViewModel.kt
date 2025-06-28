@@ -97,7 +97,9 @@ class AddTransactionViewModel(application: Application) : AndroidViewModel(appli
         Transaction(
             0,
             _name.value,
-            _amount.value ?: 100.0,
+            _amount.value?.let {
+                if (_selectedTransactionTypeId.value == 2) -it else it
+            } ?: if (_selectedTransactionTypeId.value == 2) -100.0 else 100.0,
             _description.value,
             timestamp ?: Calendar.getInstance().timeInMillis,
             _selectedAccountId.value!!

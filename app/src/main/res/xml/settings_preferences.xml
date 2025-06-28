@@ -23,4 +23,14 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/security">
+
+        <SwitchPreference
+            android:key="pref_fingerprint"
+            android:title="@string/lock_the_app"
+            android:summary="@string/fingerprint_summary"
+            app:icon="@drawable/fingerprint"/>
+
+    </PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

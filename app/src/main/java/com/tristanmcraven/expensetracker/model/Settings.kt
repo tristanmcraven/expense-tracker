@@ -20,4 +20,5 @@ data class Settings(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "first_launch") val firstLaunch: Boolean,
     @ColumnInfo(name = "primary_currency_id") val primaryCurrencyId: Int,
+    @ColumnInfo(name = "fingerprint_required") val fingerprintRequired: Boolean
 )

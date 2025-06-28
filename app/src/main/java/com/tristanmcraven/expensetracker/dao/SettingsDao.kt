@@ -17,6 +17,9 @@ interface SettingsDao {
     @Query("SELECT * FROM settings WHERE id = :id")
     fun getById(id: Int): Flow<Settings>
 
+    @Query("SELECT * FROM settings WHERE id = 1")
+    fun getInstance(): Flow<Settings>
+
     @Insert
     suspend fun insert(settings: Settings)
 
@@ -31,4 +34,10 @@ interface SettingsDao {
 
     @Query("SELECT first_launch FROM settings WHERE id = 1")
     suspend fun getFirstLaunch(): Boolean?
+
+    @Query("SELECT fingerprint_required from settings where id = 1")
+    suspend fun isFingerprintRequired(): Boolean?
+
+    @Query("UPDATE settings SET fingerprint_required = :value WHERE id = 1")
+    suspend fun setFingerprintRequired(value: Boolean)
 }

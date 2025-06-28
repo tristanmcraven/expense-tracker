@@ -121,4 +121,10 @@
     <string name="by_proceeding">Upon proceeding, all of your current transaction data will be permanently lost, so make sure to back it up first.</string>
     <string name="my_tab">My Tab (Мой учёт)</string>
     <string name="permission_denied_action_unavailable">Permission denied. Action unavailable.</string>
+    <string name="security">Security</string>
+    <string name="lock_the_app">Lock the app</string>
+    <string name="fingerprint_summary">If enabled, a fingerprint authentication is required</string>
+    <string name="authentication">Authentication</string>
+    <string name="auth_description">You have enabled fingerprint authentication in settings.</string>
+    <string name="try_again">Try again</string>
 </resources>

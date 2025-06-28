@@ -15,7 +15,7 @@ android {
         minSdk = 33
         targetSdk = 35
         versionCode = 1
-        versionName = "0.5.1-beta.1"
+        versionName = "0.6.3-beta.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.androidx.activity)
     kapt(libs.kapt)
     implementation(libs.gson)
+    implementation(libs.biometric)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

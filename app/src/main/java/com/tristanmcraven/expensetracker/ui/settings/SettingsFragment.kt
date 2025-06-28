@@ -1,19 +1,28 @@
 package com.tristanmcraven.expensetracker.ui.settings
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.*
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import com.google.gson.Gson
 import com.tristanmcraven.expensetracker.ExpenseTrackerApp
 import com.tristanmcraven.expensetracker.R
-import com.tristanmcraven.expensetracker.db.AppDb
 import com.tristanmcraven.expensetracker.ie.exporter.ExportFile
+import com.tristanmcraven.expensetracker.viewmodel.SettingsViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -28,8 +37,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         uri?.let { writeJsonDumpToUri(it) }
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_preferences, rootKey)
+    private val vm : SettingsViewModel by activityViewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         findPreference<Preference>("pref_data_export")?.setOnPreferenceClickListener {
             exportTransactions()
@@ -39,6 +50,33 @@ class SettingsFragment : PreferenceFragmentCompat() {
             findNavController().navigate(R.id.action_SettingsFragment_to_ImportDataFragment)
             true
         }
+        val fingerprintRequiredSwitch = findPreference<SwitchPreference>("pref_fingerprint")!!
+        viewLifecycleOwner.lifecycleScope.launch {
+            vm.isFingerprintRequired.collect { required ->
+                fingerprintRequiredSwitch.isChecked = required
+            }
+        }
+        fingerprintRequiredSwitch.setOnPreferenceChangeListener { _, newValue ->
+            val biometricManager = BiometricManager.from(requireContext())
+            if (biometricManager.canAuthenticate(BIOMETRIC_STRONG) != BIOMETRIC_SUCCESS) {
+                Toast.makeText(requireContext(), "Biometrics unavailable.", Toast.LENGTH_SHORT).show()
+                return@setOnPreferenceChangeListener false
+            }
+
+            val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                    BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+            }
+            startActivityForResult(enrollIntent, 200)
+
+            val checked = newValue as Boolean
+            vm.setFingerprintRequired(checked)
+            return@setOnPreferenceChangeListener true
+        }
+    }
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.settings_preferences, rootKey)
     }
 
     private fun exportTransactions() {

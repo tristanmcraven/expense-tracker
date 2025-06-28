@@ -2,6 +2,8 @@ package com.tristanmcraven.expensetracker.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.tristanmcraven.expensetracker.dao.AccountDao
 import com.tristanmcraven.expensetracker.dao.CurrencyDao
 import com.tristanmcraven.expensetracker.dao.ProfileInfoDao
@@ -30,7 +32,7 @@ import com.tristanmcraven.expensetracker.model.UserSecondaryCurrencies
        UserAccounts::class,
        UserSecondaryCurrencies::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDb : RoomDatabase() {
