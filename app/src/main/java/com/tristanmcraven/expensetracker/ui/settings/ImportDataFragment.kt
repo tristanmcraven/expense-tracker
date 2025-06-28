@@ -17,8 +17,10 @@ import com.tristanmcraven.expensetracker.R
 import com.tristanmcraven.expensetracker.databinding.FragmentImportDataBinding
 import com.tristanmcraven.expensetracker.databinding.FragmentNameBinding
 import com.tristanmcraven.expensetracker.ie.importer.ImporterApp
+import com.tristanmcraven.expensetracker.ie.importer.expense_tracker.ExpenseTrackerImportFile
 import com.tristanmcraven.expensetracker.ie.importer.my_tab.MyTabImportFile
 import com.tristanmcraven.expensetracker.model.Transaction
+import com.tristanmcraven.expensetracker.utility.GenericHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -59,6 +61,10 @@ class ImportDataFragment : Fragment() {
             selectedApp = ImporterApp.MY_TAB
             pickJson.launch(arrayOf("application/json"))
         }
+        binding.buttonExpenseTracker.setOnClickListener {
+            selectedApp = ImporterApp.EXPENSE_TRACKER
+            pickJson.launch(arrayOf("application/json"))
+        }
     }
 
     override fun onDestroyView() {
@@ -72,52 +78,45 @@ class ImportDataFragment : Fragment() {
                val json = requireContext().contentResolver
                    .openInputStream(uri)!!
                    .bufferedReader()
-                   .use { it.readText() }
+                   .use { it.readText() } 
+               val account = db.accountDao().get().first().firstOrNull()
 
-                val importFile = Gson().fromJson(json, MyTabImportFile::class.java)
+               val newTransactions = when (selectedApp) {
+                   ImporterApp.MY_TAB -> {
+                       val importFile = Gson().fromJson(json, MyTabImportFile::class.java)
+                       importFile.expenses.mapNotNull { ie ->
+                           val time = ie.time
+                           //TODO implement white-man solution, get rid of ts ↓↓↓
+                           val instant = Instant.parse(time.removeRange(time.length - 4, time.length) + "Z")
+                           Transaction(
+                               id = 0,
+                               name = ie.name,
+                               amount = if (ie.type == "expense") -(ie.currency)
+                               else ie.currency,
+                               description = ie.description,
+                               timestamp = instant.toEpochMilli(),
+                               accountId = account?.id ?: 1
+                           )
+                       }
+                   }
 
-                val account = db.accountDao().get().first().firstOrNull()
-                val newTransactions = when(selectedApp) {
-                    ImporterApp.MY_TAB ->
-                        importFile.expenses.mapNotNull { ie ->
-                            val time = ie.time
-                            //TODO implement white-man solution, get rid of ts ↓↓↓
-                            val instant = Instant.parse(time.removeRange(time.length - 4, time.length) + "Z")
-                            Transaction(
-                                id = 0,
-                                name = ie.name,
-                                amount = if (ie.type == "expense") -(ie.currency)
-                                else ie.currency,
-                                description = ie.description,
-                                timestamp = instant.toEpochMilli(),
-                                accountId = account?.id ?: 1
-                            )
-                        }
-                    ImporterApp.EXPENSE_TRACKER ->
-                        //this is a stub, TODO edit it later!!!
-                        importFile.expenses.mapNotNull { ie ->
-                            val time = ie.time
-                            val instant = Instant.parse(time.removeRange(time.length - 4, time.length) + "Z")
-                            Transaction(
-                                id = 0,
-                                name = ie.name,
-                                amount = ie.currency,
-                                description = ie.description,
-                                timestamp = instant.toEpochMilli(),
-                                accountId = account?.id ?: 1
-                            )
-                        }
-                }
+                   ImporterApp.EXPENSE_TRACKER -> {
+                       val importFile = Gson().fromJson(json, ExpenseTrackerImportFile::class.java)
+                       if (importFile.version != GenericHelper.getCurrentDbVersion(requireContext()))
+                           throw Exception("Version Incompatible")
+                       importFile.transactions
+                   }
+               }
 
-                withContext(Dispatchers.IO) {
-                    db.transactionDao().deleteAll()
-                    newTransactions.forEach { db.transactionDao().insert(it) }
-                }
+               withContext(Dispatchers.IO) {
+                   db.transactionDao().deleteAll()
+                   newTransactions.forEach { db.transactionDao().insert(it) }
+               }
 
-                Toast.makeText(
-                    requireContext(),
-                    "Success (maybe)",
-                    Toast.LENGTH_SHORT).show()
+               Toast.makeText(
+                   requireContext(),
+                   "Success (maybe)",
+                   Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Log.e("Import", "Failed to import json", e)
                 Toast.makeText(

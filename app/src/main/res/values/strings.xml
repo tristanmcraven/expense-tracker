@@ -120,4 +120,5 @@
     <string name="select_a_supported_app_from_list_below">Select a supported app from list below</string>
     <string name="by_proceeding">Upon proceeding, all of your current transaction data will be permanently lost, so make sure to back it up first.</string>
     <string name="my_tab">My Tab (Мой учёт)</string>
+    <string name="permission_denied_action_unavailable">Permission denied. Action unavailable.</string>
 </resources>
