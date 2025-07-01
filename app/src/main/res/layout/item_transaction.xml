@@ -15,60 +15,76 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-    
-    <TextView
-        android:id="@+id/textViewTransactionName"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Transaction Name"
+        android:layout_marginStart="8dp"
 
         app:layout_constraintStart_toEndOf="@id/imageViewCategory"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/textViewCategoryName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Category name"
+        <TextView
+            android:id="@+id/textViewTransactionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Transaction Name"
+            android:textSize="16sp"
 
-        app:layout_constraintStart_toEndOf="@id/imageViewCategory"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
-        android:id="@+id/textViewDot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/middle_dot"
+        <TextView
+            android:id="@+id/textViewCategoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Category name"
 
-        app:layout_constraintStart_toEndOf="@id/textViewCategoryName"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewTransactionName"/>
 
-    <TextView
-        android:id="@+id/textViewDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="19.06.2025"
+        <TextView
+            android:id="@+id/textViewDot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/middle_dot"
+            android:layout_marginStart="@dimen/dot_margin"
 
-        app:layout_constraintStart_toEndOf="@id/textViewDot"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/textViewCategoryName"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <TextView
-        android:id="@+id/textViewDot1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/middle_dot"
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="19.06.2025"
+            android:layout_marginStart="@dimen/dot_margin"
 
-        app:layout_constraintStart_toEndOf="@id/textViewDate"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/textViewDot"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <TextView
-        android:id="@+id/textViewTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="23:15"
+        <TextView
+            android:id="@+id/textViewDot1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/middle_dot"
+            android:layout_marginStart="@dimen/dot_margin"
 
-        app:layout_constraintStart_toEndOf="@id/textViewDot1"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/textViewDate"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="23:15"
+            android:layout_marginStart="@dimen/dot_margin"
+
+            app:layout_constraintStart_toEndOf="@id/textViewDot1"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -92,6 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="499 990 ₽ | 4250 €"
+            android:visibility="gone"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewAmount" />

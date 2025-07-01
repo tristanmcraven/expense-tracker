@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.tristanmcraven.expensetracker.databinding.ActivityAddTransactionBinding
+import com.tristanmcraven.expensetracker.model.Account
 import com.tristanmcraven.expensetracker.model.UserAccounts
 import com.tristanmcraven.expensetracker.utility.UiUtility
 import com.tristanmcraven.expensetracker.viewmodel.AddTransactionViewModel
@@ -77,7 +78,7 @@ class AddTransactionActivity : AppCompatActivity() {
 
     private fun initAsEditing() {
         binding.buttonAdd.text = "Update transaction"
-        binding.textViewAddTransaction.text = "Update existing transaction"
+        binding.textViewAddTransaction.text = "Update Existing Transaction"
         binding.editTextTransactionName.setText(vm.name.value)
         binding.editTextTransactionAmount.setText(kotlin.math.abs(vm.amount.value ?: 100.0).toString())
         binding.editTextTransactionDescription.setText(vm.description.value)
@@ -117,12 +118,8 @@ class AddTransactionActivity : AppCompatActivity() {
         lifecycleScope.launch {
             userAccounts = vm.userAccounts.first()
             userAccounts.forEach { uAcc ->
-                createUserAccountChip(when (uAcc.accountId) {
-                    1 -> "Cash"
-                    2 -> "Card"
-                    3 -> "Crypto"
-                    else -> "Cash"
-                }, uAcc.accountId, binding.chipGroupAccounts)
+                val account = (application as ExpenseTrackerApp).db.accountDao().getById(uAcc.accountId)
+                createUserAccountChip(account.first(), binding.chipGroupAccounts)
             }
         }
     }
@@ -135,13 +132,13 @@ class AddTransactionActivity : AppCompatActivity() {
         }
     }
 
-    private fun createUserAccountChip(displayText: String, id: Int, parent: ChipGroup) {
+    private fun createUserAccountChip(account: Account, parent: ChipGroup) {
         val chip = layoutInflater.inflate(R.layout.chip_filter, parent, false) as Chip
 
         chip.apply {
-            text = displayText
-            chipIcon = ContextCompat.getDrawable(this@AddTransactionActivity, UiUtility.getChipIcon(displayText))
-            tag = id
+            text = account.name
+            chipIcon = ContextCompat.getDrawable(this@AddTransactionActivity, account.drawableId)
+            tag = account.id
             isChecked = vm.selectedAccountId.value == tag
             setOnCheckedChangeListener{ _, isChecked ->
                 vm.setSelectedAccountId(tag.toString().toInt())
@@ -153,12 +150,31 @@ class AddTransactionActivity : AppCompatActivity() {
         parent.addView(chip)
     }
 
+//    private fun createUserAccountChip(displayText: String, id: Int, parent: ChipGroup) {
+//        val chip = layoutInflater.inflate(R.layout.chip_filter, parent, false) as Chip
+//
+//        chip.apply {
+//            text = displayText
+//            chipIcon = ContextCompat.getDrawable(this@AddTransactionActivity, UiUtility.getChipIcon(displayText))
+//            tag = id
+//            isChecked = vm.selectedAccountId.value == tag
+//            setOnCheckedChangeListener{ _, isChecked ->
+//                vm.setSelectedAccountId(tag.toString().toInt())
+//            }
+//        }
+//        if (vm.isEditing.value == false && userAccounts.count() == chip.tag.toString().toInt()) {
+//            chip.performClick()
+//        }
+//        parent.addView(chip)
+//    }
+
     private fun createTransactionTypeChip(displayText: String, id: Int, parent: ChipGroup) {
         val chip = layoutInflater.inflate(R.layout.chip_filter, parent, false) as Chip
 
         chip.apply {
             text = displayText
-            chipIcon = ContextCompat.getDrawable(this@AddTransactionActivity, UiUtility.getChipIcon(displayText))
+            chipIcon = ContextCompat.getDrawable(
+                this@AddTransactionActivity, if (id == 1) R.drawable.income else R.drawable.expense)
             tag = id
             isChecked = vm.selectedTransactionTypeId.value == tag
             setOnCheckedChangeListener{ _, isChecked ->

@@ -5,7 +5,11 @@ import android.util.Log
 import androidx.room.Room
 import com.tristanmcraven.expensetracker.db.AppDb
 import com.tristanmcraven.expensetracker.db.MIGRATION_3_4
+import com.tristanmcraven.expensetracker.utility.GenericHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class ExpenseTrackerApp : Application() {
 
@@ -24,6 +28,12 @@ class ExpenseTrackerApp : Application() {
             .build()
 
         db.openHelper.writableDatabase
+
+        CoroutineScope(Dispatchers.IO).launch {
+            GenericHelper.MainCurrencySymbol = db.currencyDao().getById(
+                db.settingsDao().getInstance().first().primaryCurrencyId
+            ).first().symbol
+        }
 
         val dbFile = applicationContext.getDatabasePath("expense_tracker.db")
         Log.d("DB_CHECK", "\n\n\nEXISTS? ${dbFile.exists()} at ${dbFile.absolutePath}\n\n\n")

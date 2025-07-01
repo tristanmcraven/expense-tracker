@@ -4,22 +4,19 @@
 
     <PreferenceCategory android:title="Data">
 
-        <SwitchPreferenceCompat
-            android:title="Nigger" />
+        <Preference
+            android:key="pref_data_import"
+            android:title="@string/data_import_beta"
+            android:summary="@string/import_raw_json_data"
+            android:icon="@drawable/ic_import"
+            android:iconSpaceReserved="false" />
 
         <Preference
             android:key="pref_data_export"
             android:title="Data Export"
             android:summary="Export your transaction history as a JSON file"
-            app:icon="@drawable/not_found"
+            app:icon="@drawable/export"
             android:iconSpaceReserved="false"/>
-
-        <Preference
-            android:key="pref_data_import"
-            android:title="@string/data_import_beta"
-            android:summary="@string/import_raw_json_data"
-            android:icon="@drawable/not_found"
-            android:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 

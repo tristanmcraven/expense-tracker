@@ -1,15 +1,15 @@
 package com.tristanmcraven.expensetracker.utility
 
-import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import com.tristanmcraven.expensetracker.ExpenseTrackerApp
-import kotlinx.coroutines.CoroutineScope
 import java.io.File
 import java.io.FileOutputStream
 
 object GenericHelper {
+
+    var MainCurrencySymbol = "$"
 
     suspend fun saveImageToAppStorage(context: Context, sourceUri: Uri): Uri {
 

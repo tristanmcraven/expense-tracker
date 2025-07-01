@@ -1,18 +1,17 @@
 package com.tristanmcraven.expensetracker.adapter
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.tristanmcraven.expensetracker.AddTransactionActivity
 import com.tristanmcraven.expensetracker.R
 import com.tristanmcraven.expensetracker.databinding.ItemGroupedTransactionsHeaderBinding
 import com.tristanmcraven.expensetracker.databinding.ItemTransactionBinding
 import com.tristanmcraven.expensetracker.model.Transaction
+import com.tristanmcraven.expensetracker.utility.GenericHelper
 import com.tristanmcraven.expensetracker.utility.GroupBy
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -131,18 +130,30 @@ class TransactionAdapter(
 
     inner class HeaderVH(private val binding: ItemGroupedTransactionsHeaderBinding)
         : RecyclerView.ViewHolder(binding.root) {
+            @SuppressLint("DefaultLocale", "SetTextI18n")
             fun bind(header: TransactionListItem.Header) {
+                val context = binding.root.context
+                val sum = header.sum
+
                 binding.textViewTime.text = header.title
-                binding.textViewTotalSum.text = String.format("%.2f", header.sum)
+                binding.textViewTotalSum.text = "${String.format("%.2f", sum)} ${GenericHelper.MainCurrencySymbol}"
+                binding.textViewTotalSum.setTextColor(
+                    ContextCompat.getColor(context, if (sum > 0) R.color.green else R.color.red)
+                )
             }
         }
 
     inner class ItemVH(private val binding: ItemTransactionBinding)
         : RecyclerView.ViewHolder(binding.root) {
+            @SuppressLint("DefaultLocale", "SetTextI18n")
             fun bind(tx: Transaction) {
                 val context = binding.root.context
+                val amount = tx.amount
 
-                binding.textViewAmount.text = String.format("%.2f", tx.amount)
+                binding.textViewAmount.text = "${String.format("%.2f", amount)} ${GenericHelper.MainCurrencySymbol}"
+                binding.textViewAmount.setTextColor(
+                    ContextCompat.getColor(context, if (amount > 0) R.color.green else R.color.red)
+                )
                 binding.textViewTransactionName.text = if (tx.name.isNullOrBlank()) "Transaction without name" else tx.name
                 binding.textViewCategoryName.text = context.getString(R.string.category)
                 binding.textViewDate.text = tx.dateString

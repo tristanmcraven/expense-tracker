@@ -4,13 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.settings.ImportDataFragment">
+    tools:context=".ui.settings.ImportDataFragment"
+
+    style="@style/FragmentMarginStyle">
 
     <TextView
         android:id="@+id/textViewSelectApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_a_supported_app_from_list_below"
+        android:textSize="18sp"
+        android:textStyle="bold"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -21,6 +25,8 @@
         android:layout_height="wrap_content"
         android:text="@string/by_proceeding"
         android:textColor="@color/red"
+        android:layout_marginTop="12dp"
+        android:textSize="16sp"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewSelectApp"/>
@@ -30,25 +36,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="16dp"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewUponProceeding">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonMyTab"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:icon="@drawable/not_found"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
             android:text="@string/my_tab"
-            android:textAlignment="textStart"/>
+            android:textAlignment="center"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonExpenseTracker"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:icon="@drawable/not_found"
+            app:icon="@drawable/wallet"
+            app:iconPadding="10dp"
+            app:iconGravity="textStart"
             android:text="@string/expense_tracker"
-            android:textAlignment="textStart"/>
+            android:textAlignment="center"/>
 
     </LinearLayout>
 
