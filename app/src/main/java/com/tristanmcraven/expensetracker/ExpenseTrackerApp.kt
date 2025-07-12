@@ -30,9 +30,14 @@ class ExpenseTrackerApp : Application() {
         db.openHelper.writableDatabase
 
         CoroutineScope(Dispatchers.IO).launch {
-            GenericHelper.MainCurrencySymbol = db.currencyDao().getById(
-                db.settingsDao().getInstance().first().primaryCurrencyId
-            ).first().symbol
+            val settingsList = db.settingsDao().get().first()
+            val settings = settingsList.firstOrNull()
+
+            if (settings != null) {
+                GenericHelper.MainCurrencySymbol = db.currencyDao().getById(
+                    db.settingsDao().getInstance().first().primaryCurrencyId
+                ).first().symbol
+            }
         }
 
         val dbFile = applicationContext.getDatabasePath("expense_tracker.db")
