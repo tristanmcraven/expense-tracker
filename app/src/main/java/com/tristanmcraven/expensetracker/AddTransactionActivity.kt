@@ -1,10 +1,12 @@
 package com.tristanmcraven.expensetracker
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -15,8 +17,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.transition.Visibility
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.datepicker.MaterialStyledDatePickerDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tristanmcraven.expensetracker.databinding.ActivityAddTransactionBinding
 import com.tristanmcraven.expensetracker.model.Account
 import com.tristanmcraven.expensetracker.model.UserAccounts
@@ -77,6 +82,7 @@ class AddTransactionActivity : AppCompatActivity() {
     }
 
     private fun initAsEditing() {
+        binding.buttonDelete.visibility = View.VISIBLE
         binding.buttonAdd.text = "Update transaction"
         binding.textViewAddTransaction.text = "Update Existing Transaction"
         binding.editTextTransactionName.setText(vm.name.value)
@@ -99,6 +105,22 @@ class AddTransactionActivity : AppCompatActivity() {
                 }
                 finish()
             }
+        }
+        binding.buttonDelete.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.confirmation)
+                .setMessage(R.string.delete_confirmation)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    lifecycleScope.launch {
+                        val transaction = vm.transactionObject
+                        (application as ExpenseTrackerApp).db.transactionDao().delete(transaction)
+                        finish()
+                        Toast.makeText(this@AddTransactionActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton(R.string.no) { dialog, id ->
+                    dialog.dismiss()
+                }.show()
         }
     }
 
@@ -190,9 +212,6 @@ class AddTransactionActivity : AppCompatActivity() {
         vm.dateAsString.observe(this@AddTransactionActivity) {
             binding.buttonSelectDate.text = it
         }
-        vm.timeAsString.observe(this@AddTransactionActivity) {
-            binding.buttonSelectTime.text = it
-        }
         binding.buttonSelectDate.setOnClickListener {
             val calendar = Calendar.getInstance()
 
@@ -210,16 +229,20 @@ class AddTransactionActivity : AppCompatActivity() {
             datePicker.show()
         }
 
+        vm.timeAsString.observe(this@AddTransactionActivity) {
+            binding.buttonSelectTime.text = it
+        }
         binding.buttonSelectTime.setOnClickListener {
             val calendar = Calendar.getInstance()
 
             val timePicker = TimePickerDialog(
                 this,
                 { _, hours, minute ->
-                    calendar.set(hours, minute)
+                    calendar.set(Calendar.HOUR_OF_DAY, hours)
+                    calendar.set(Calendar.MINUTE, minute)
                     vm.setTime(calendar.timeInMillis)
                 },
-                calendar.get(Calendar.HOUR),
+                calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 true
             )

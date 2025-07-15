@@ -129,4 +129,11 @@
     <string name="try_again">Try again</string>
     <string name="select">Select</string>
     <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="save">Save</string>
+    <string name="delete_transaction">Delete Transaction</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="delete_confirmation">Are you sure you want to delete this transaction?</string>
+    <string name="yes">Yes</string>
+    <string name="no">no</string>
 </resources>

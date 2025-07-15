@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.tristanmcraven.expensetracker.ExpenseTrackerApp
+import com.tristanmcraven.expensetracker.utility.GenericHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,5 +22,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     fun setFingerprintRequired(value: Boolean) = viewModelScope.launch(Dispatchers.IO) {
         settingsDao.setFingerprintRequired(value)
+    }
+
+    fun setGroupedSumColor(value: String) = viewModelScope.launch(Dispatchers.IO) {
+        settingsDao.setGroupedSumColor(value)
+        GenericHelper.GroupedSumColor = settingsDao.getGroupedSumColor()
     }
 }

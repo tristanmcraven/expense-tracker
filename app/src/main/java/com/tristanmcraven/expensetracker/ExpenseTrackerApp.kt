@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.room.Room
 import com.tristanmcraven.expensetracker.db.AppDb
 import com.tristanmcraven.expensetracker.db.MIGRATION_3_4
+import com.tristanmcraven.expensetracker.db.MIGRATION_4_5
 import com.tristanmcraven.expensetracker.utility.GenericHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +25,7 @@ class ExpenseTrackerApp : Application() {
                 AppDb::class.java,
                 "expense_tracker.db"
             )
-            .addMigrations(MIGRATION_3_4)
+            .addMigrations(MIGRATION_3_4, MIGRATION_4_5)
             .build()
 
         db.openHelper.writableDatabase
@@ -37,6 +38,7 @@ class ExpenseTrackerApp : Application() {
                 GenericHelper.MainCurrencySymbol = db.currencyDao().getById(
                     db.settingsDao().getInstance().first().primaryCurrencyId
                 ).first().symbol
+                GenericHelper.GroupedSumColor = db.settingsDao().getGroupedSumColor()
             }
         }
 

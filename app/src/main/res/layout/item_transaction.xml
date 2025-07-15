@@ -10,7 +10,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="5dp"
-        android:src="@drawable/not_found"
+        android:src="@drawable/money"
         android:contentDescription="@string/transaction_category_icon"
 
         app:layout_constraintStart_toStartOf="parent"
@@ -115,5 +115,13 @@
             app:layout_constraintTop_toBottomOf="@id/textViewAmount" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="?attr/colorControlNormal"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

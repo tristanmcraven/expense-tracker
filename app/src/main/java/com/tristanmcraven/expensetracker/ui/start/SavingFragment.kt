@@ -102,7 +102,7 @@ class SavingFragment : Fragment() {
                 "Euro" -> 3
                 else -> 1
             }
-            db.settingsDao().insert(Settings(0, false, selectedPrimaryCurrencyId, false))
+            db.settingsDao().insert(Settings(0, false, selectedPrimaryCurrencyId, false, "default"))
 
             withContext(Dispatchers.Main) {
                 Toast.makeText(

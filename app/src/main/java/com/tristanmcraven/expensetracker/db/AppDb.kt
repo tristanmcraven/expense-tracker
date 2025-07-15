@@ -32,7 +32,7 @@ import com.tristanmcraven.expensetracker.model.UserSecondaryCurrencies
        UserAccounts::class,
        UserSecondaryCurrencies::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AppDb : RoomDatabase() {

@@ -170,6 +170,19 @@
             app:layout_constraintTop_toBottomOf="@id/textViewSelectAccount"/>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonDelete"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:strokeColor="@color/red"
+            android:textColor="@color/red"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_transaction"
+            android:visibility="gone"
+
+            app:layout_constraintBottom_toTopOf="@id/buttonAdd"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

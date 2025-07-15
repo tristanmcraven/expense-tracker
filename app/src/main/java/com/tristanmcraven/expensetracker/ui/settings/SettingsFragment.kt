@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,17 +48,23 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>("pref_grouped_sum_color")?.setOnPreferenceClickListener {
 
-            val cpd = ColorPickerDialog.Builder(requireContext())
+            val cpd =
+                ColorPickerDialog.Builder(requireContext())
                 .setTitle("Choose color")
                 .setPreferenceName("GroupedSumColorDialog")
                 .setPositiveButton(
-                    getString(R.string.select),
+                    getString(R.string.save),
                     ColorEnvelopeListener { envelope, fromUser ->
-                        Log.d("COLOR", "${envelope.hexCode}")
+                        Toast.makeText(requireContext(), envelope.hexCode, Toast.LENGTH_SHORT).show()
+                        vm.setGroupedSumColor(envelope.hexCode)
                     })
                 .setNegativeButton(
-                    getString(R.string.cancel)
-                ) { dialogInterface, i -> dialogInterface.dismiss() }
+                    getString(R.string.reset)
+                ) { dialogInterface, i ->
+                    vm.setGroupedSumColor("default")
+                    Toast.makeText(requireContext(), "Value Reset", Toast.LENGTH_SHORT).show()
+                    dialogInterface.dismiss()
+                }
                 .attachAlphaSlideBar(true) // the default value is true.
                 .attachBrightnessSlideBar(true) // the default value is true.
                 .setBottomSpace(12) // set a bottom space between the last slidebar and buttons.

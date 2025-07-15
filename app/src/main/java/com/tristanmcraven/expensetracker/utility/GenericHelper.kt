@@ -10,6 +10,7 @@ import java.io.FileOutputStream
 object GenericHelper {
 
     var MainCurrencySymbol = "$"
+    var GroupedSumColor = "default"
 
     suspend fun saveImageToAppStorage(context: Context, sourceUri: Uri): Uri {
 

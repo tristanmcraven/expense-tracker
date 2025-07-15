@@ -138,7 +138,13 @@ class TransactionAdapter(
                 binding.textViewTime.text = header.title
                 binding.textViewTotalSum.text = "${String.format("%.2f", sum)} ${GenericHelper.MainCurrencySymbol}"
                 binding.textViewTotalSum.setTextColor(
-                    ContextCompat.getColor(context, if (sum > 0) R.color.green else R.color.red)
+                    if (GenericHelper.GroupedSumColor == "default") {
+                        ContextCompat.getColor(context, if (sum > 0) R.color.green else R.color.red)
+                    }
+                    else {
+                        @OptIn(kotlin.ExperimentalStdlibApi::class)
+                        GenericHelper.GroupedSumColor.hexToInt()
+                    }
                 )
             }
         }
@@ -154,6 +160,9 @@ class TransactionAdapter(
                 binding.textViewAmount.setTextColor(
                     ContextCompat.getColor(context, if (amount > 0) R.color.green else R.color.red)
                 )
+                if (amount < 0) {
+                    binding.imageViewCategory.setImageResource(R.drawable.money_red)
+                }
                 binding.textViewTransactionName.text = if (tx.name.isNullOrBlank()) "Transaction without name" else tx.name
                 binding.textViewCategoryName.text = context.getString(R.string.category)
                 binding.textViewDate.text = tx.dateString

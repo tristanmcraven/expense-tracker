@@ -40,4 +40,10 @@ interface SettingsDao {
 
     @Query("UPDATE settings SET fingerprint_required = :value WHERE id = 1")
     suspend fun setFingerprintRequired(value: Boolean)
+
+    @Query("UPDATE settings SET grouped_sum_color = :value WHERE id = 1")
+    suspend fun setGroupedSumColor(value: String)
+
+    @Query("SELECT grouped_sum_color from settings WHERE id = 1")
+    suspend fun getGroupedSumColor(): String
 }
