@@ -221,7 +221,7 @@ class AddTransactionActivity : AppCompatActivity() {
                 },
                 calendar.get(Calendar.HOUR),
                 calendar.get(Calendar.MINUTE),
-                false
+                true
             )
 
             timePicker.show()

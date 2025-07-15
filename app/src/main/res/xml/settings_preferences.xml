@@ -2,6 +2,15 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory android:title="Design">
+
+        <Preference
+            android:key="pref_grouped_sum_color"
+            android:title="Grouped sum color"
+            android:icon="@drawable/not_found"/>
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="Data">
 
         <Preference

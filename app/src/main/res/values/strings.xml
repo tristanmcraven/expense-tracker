@@ -127,4 +127,6 @@
     <string name="authentication">Authentication</string>
     <string name="auth_description">You have enabled fingerprint authentication in settings.</string>
     <string name="try_again">Try again</string>
+    <string name="select">Select</string>
+    <string name="cancel">Cancel</string>
 </resources>

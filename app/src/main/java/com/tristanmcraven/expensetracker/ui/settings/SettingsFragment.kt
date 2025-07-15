@@ -19,6 +19,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.google.gson.Gson
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import com.tristanmcraven.expensetracker.ExpenseTrackerApp
 import com.tristanmcraven.expensetracker.R
 import com.tristanmcraven.expensetracker.ie.exporter.ExportFile
@@ -28,6 +30,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -42,6 +45,26 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        findPreference<Preference>("pref_grouped_sum_color")?.setOnPreferenceClickListener {
+
+            val cpd = ColorPickerDialog.Builder(requireContext())
+                .setTitle("Choose color")
+                .setPreferenceName("GroupedSumColorDialog")
+                .setPositiveButton(
+                    getString(R.string.select),
+                    ColorEnvelopeListener { envelope, fromUser ->
+                        Log.d("COLOR", "${envelope.hexCode}")
+                    })
+                .setNegativeButton(
+                    getString(R.string.cancel)
+                ) { dialogInterface, i -> dialogInterface.dismiss() }
+                .attachAlphaSlideBar(true) // the default value is true.
+                .attachBrightnessSlideBar(true) // the default value is true.
+                .setBottomSpace(12) // set a bottom space between the last slidebar and buttons.
+            cpd.show()
+
+            true
+        }
         findPreference<Preference>("pref_data_export")?.setOnPreferenceClickListener {
             exportTransactions()
             true

@@ -83,7 +83,7 @@ class AddTransactionViewModel(application: Application) : AndroidViewModel(appli
 
     fun setTime(value: Long) {
         _time.value = value
-        _timeAsString.value = SimpleDateFormat("HH:mm", Locale.getDefault()).format(_time.value)
+        _timeAsString.value = SimpleDateFormat("HH:mm", Locale.GERMANY).format(_time.value)
     }
 
     val timestamp get() = combineDateTime(_date.value, _time.value)

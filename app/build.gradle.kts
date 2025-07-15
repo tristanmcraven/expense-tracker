@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.preference)
+    implementation(libs.androidx.preference.ktx)
     implementation(libs.flexbox)
 
     implementation(libs.room)
@@ -59,6 +60,7 @@ dependencies {
     kapt(libs.kapt)
     implementation(libs.gson)
     implementation(libs.biometric)
+    implementation(libs.colorpickerview)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
