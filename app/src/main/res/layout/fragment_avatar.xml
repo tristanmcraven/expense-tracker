@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.start.AvatarFragment">
+    tools:context=".ui.start.AvatarFragment"
+
+    style="@style/StartFragmentStyle">
 
     <ImageView
         android:id="@+id/imageViewAddAvatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/not_found"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/add_pfp"
         android:contentDescription="@string/add_avatar"
 
         app:layout_constraintStart_toStartOf="parent"
@@ -21,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profile_picture"
+        style="@style/StartHeader"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageViewAddAvatar"/>
@@ -30,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/let_s_upload_your_profile_picture"
+        style="@style/StartSubHeader"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewAvatar"/>
@@ -39,6 +43,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/teal_200"
         app:cardCornerRadius="1000dp"
+        android:layout_marginTop="20dp"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +53,7 @@
             android:id="@+id/imageViewAvatar"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/add_pfp"
+            android:src="@drawable/default_pfp"
             android:padding="50dp"/>
 
     </com.google.android.material.card.MaterialCardView>

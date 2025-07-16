@@ -2,9 +2,7 @@ package com.tristanmcraven.expensetracker.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import com.tristanmcraven.expensetracker.ExpenseTrackerApp
-import com.tristanmcraven.expensetracker.model.ProfileInfo
 import com.tristanmcraven.expensetracker.model.Transaction
 import com.tristanmcraven.expensetracker.utility.GroupBy
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +30,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             when (gb) {
                 GroupBy.ALL -> transactionDao.getDescending()
                 GroupBy.DAY -> transactionDao.getDescending()
-                GroupBy.WEEK -> transactionDao.getDescending()
+                GroupBy.WEEK_OF_MONTH -> transactionDao.getDescending()
+                GroupBy.WEEK_OF_YEAR -> transactionDao.getDescending()
                 GroupBy.MONTH -> transactionDao.getDescending()
                 GroupBy.YEAR -> transactionDao.getDescending()
             }

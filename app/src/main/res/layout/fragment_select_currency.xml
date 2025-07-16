@@ -5,15 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.start.SelectCurrencyFragment">
+    tools:context=".ui.start.SelectCurrencyFragment"
+
+    style="@style/StartFragmentStyle">
 
     <ImageView
         android:id="@+id/imageViewCurrency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/not_found"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/currencies"
         android:contentDescription="@string/currency_icon"
-        android:backgroundTint="@color/teal_200"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -23,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/currencies"
+        style="@style/StartHeader"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageViewCurrency"/>
@@ -32,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_main_currency"
+        style="@style/StartSubHeader"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewCurrency"/>
@@ -51,6 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_secondary_currencies"
+        style="@style/StartSubHeader"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chipGroupPrimaryCurrency"/>

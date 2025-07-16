@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -44,7 +45,11 @@ class SelectCurrencyFragment : Fragment() {
         }
 
         binding.buttonNext.setOnClickListener {
-            findNavController().navigate(R.id.action_SelectCurrencyFragment_to_SavingFragment)
+            if (binding.chipGroupPrimaryCurrency.checkedChipIds.isEmpty()) {
+                Toast.makeText(requireContext(), "Select primary currency", Toast.LENGTH_SHORT).show()
+            } else {
+                findNavController().navigate(R.id.action_SelectCurrencyFragment_to_SavingFragment)
+            }
         }
     }
 
@@ -53,7 +58,7 @@ class SelectCurrencyFragment : Fragment() {
 
         chip.apply {
             text = displayText
-            chipIcon = ContextCompat.getDrawable(requireContext(), UiUtility.getChipIcon(displayText))
+            chipIcon = ContextCompat.getDrawable(requireContext(), UiUtility.getChipIcon(displayText.lowercase()))
 
             when {
                 single ->

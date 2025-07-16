@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
@@ -48,7 +50,11 @@ class AddAccountsFragment : Fragment() {
         }
 
         binding.buttonNext.setOnClickListener {
-            findNavController().navigate(R.id.action_AddAccountsFragment_to_SelectCurrencyFragment)
+            if (binding.chipGroupSelectedAccounts.checkedChipIds.isEmpty()) {
+                Toast.makeText(requireContext(), "Select at least 1 account", Toast.LENGTH_SHORT).show()
+            } else {
+                findNavController().navigate(R.id.action_AddAccountsFragment_to_SelectCurrencyFragment)
+            }
         }
     }
 

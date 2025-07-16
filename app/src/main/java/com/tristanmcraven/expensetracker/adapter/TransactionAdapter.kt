@@ -52,12 +52,33 @@ class TransactionAdapter(
                 SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
                     .format(Date(tx.timestamp))
             }
-            GroupBy.WEEK -> transactions.groupBy { tx ->
+            GroupBy.WEEK_OF_MONTH -> transactions.groupBy { tx ->
                 val cal = Calendar.getInstance().apply { timeInMillis = tx.timestamp }
                 val week  = cal.get(Calendar.WEEK_OF_MONTH)
                 val month = SimpleDateFormat("MMMM", Locale.getDefault()).format(cal.time)
                 val year  = cal.get(Calendar.YEAR)
                 "Week $week of $month $year"
+            }
+            GroupBy.WEEK_OF_YEAR -> {
+                val tmp: Map<Pair<Int,Int>, List<Transaction>> = transactions.groupBy { tx ->
+                    val cal = Calendar.getInstance().apply { timeInMillis = tx.timestamp }
+                    Pair(cal.get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.YEAR))
+                }
+                tmp.mapKeys { (weekYear, list) ->
+                    val (week, year) = weekYear
+                    val months = list
+                        .map {
+                            Calendar.getInstance().apply { timeInMillis = it.timestamp }
+                                .get(Calendar.MONTH)
+                        }.distinct().sorted()
+                    val names = months.joinToString(" - ") { idx ->
+                        SimpleDateFormat("MMMM", Locale.getDefault()).format(Calendar.getInstance().apply {
+                            set(Calendar.MONTH, idx)
+                            set(Calendar.DAY_OF_MONTH, 1)
+                        }.time)
+                    }
+                    "Week $week of $year ($names)"
+                }
             }
             GroupBy.MONTH -> transactions.groupBy { tx ->
                 SimpleDateFormat("MMMM yyyy", Locale.getDefault())
@@ -70,13 +91,6 @@ class TransactionAdapter(
         }
 
         val items = mutableListOf<TransactionListItem>()
-//        groups.toSortedMap(compareByDescending<String> { it })
-//            .forEach{ (title, list) ->
-//                val sum = list.sumOf { it.amount }
-//                items += TransactionListItem.Header(title, sum)
-//                list.sortedByDescending { it.timestamp }
-//                    .forEach { tx -> items += TransactionListItem.TxItem(tx) }
-//            }
         groups.entries.sortedByDescending { entry ->
             entry.value.maxOf { tx -> tx.timestamp }
         }.forEach { (title, list) ->

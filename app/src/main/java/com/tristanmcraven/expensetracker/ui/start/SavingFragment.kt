@@ -104,6 +104,10 @@ class SavingFragment : Fragment() {
             }
             db.settingsDao().insert(Settings(0, false, selectedPrimaryCurrencyId, false, "default"))
 
+            GenericHelper.MainCurrencySymbol = db.currencyDao().getById(
+                db.settingsDao().getInstance().first().primaryCurrencyId
+            ).first().symbol
+
             withContext(Dispatchers.Main) {
                 Toast.makeText(
                     requireContext(),

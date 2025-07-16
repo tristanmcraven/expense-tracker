@@ -46,9 +46,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         binding.buttonGroupTransactions.setOnClickListener {
-            val options = GroupBy.values().map {
-                it.name.lowercase().replaceFirstChar(Char::uppercase)
-            }.toTypedArray()
+            val options = GroupBy.values().map { it.displayName }.toTypedArray()
             val currentOption = vm.groupBy.value.ordinal
 
             AlertDialog.Builder(requireContext())
@@ -84,7 +82,7 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             vm.groupBy.collectLatest { gb ->
                 binding.buttonGroupTransactions.text =
-                    gb.name.lowercase().replaceFirstChar(Char::uppercase)
+                    gb.displayName
             }
         }
     }
