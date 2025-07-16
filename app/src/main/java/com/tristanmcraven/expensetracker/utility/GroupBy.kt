@@ -8,3 +8,5 @@ enum class GroupBy(val displayName: String) {
     MONTH("Month"),
     YEAR("Year")
 }
+
+fun Int.toGroupBy(): GroupBy = GroupBy.values()[this]

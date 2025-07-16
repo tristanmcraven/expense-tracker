@@ -46,4 +46,10 @@ interface SettingsDao {
 
     @Query("SELECT grouped_sum_color from settings WHERE id = 1")
     suspend fun getGroupedSumColor(): String
+
+    @Query("UPDATE settings SET group_by_value = :value WHERE id = 1")
+    suspend fun setGroupByValue(value: Int)
+
+    @Query("SELECT group_by_value FROM settings WHERE id = 1")
+    suspend fun getGroupByValue(): Int
 }

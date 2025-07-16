@@ -102,7 +102,7 @@ class SavingFragment : Fragment() {
                 "Euro" -> 3
                 else -> 1
             }
-            db.settingsDao().insert(Settings(0, false, selectedPrimaryCurrencyId, false, "default"))
+            db.settingsDao().insert(Settings(0, false, selectedPrimaryCurrencyId, false, "default", 1))
 
             GenericHelper.MainCurrencySymbol = db.currencyDao().getById(
                 db.settingsDao().getInstance().first().primaryCurrencyId

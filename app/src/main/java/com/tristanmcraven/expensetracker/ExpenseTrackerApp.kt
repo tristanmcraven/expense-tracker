@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.tristanmcraven.expensetracker.db.AppDb
 import com.tristanmcraven.expensetracker.db.MIGRATION_3_4
 import com.tristanmcraven.expensetracker.db.MIGRATION_4_5
+import com.tristanmcraven.expensetracker.db.MIGRATION_5_6
 import com.tristanmcraven.expensetracker.utility.GenericHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,10 @@ class ExpenseTrackerApp : Application() {
                 AppDb::class.java,
                 "expense_tracker.db"
             )
-            .addMigrations(MIGRATION_3_4, MIGRATION_4_5)
+            .addMigrations(
+                MIGRATION_3_4,
+                MIGRATION_4_5,
+                MIGRATION_5_6)
             .build()
 
         db.openHelper.writableDatabase
