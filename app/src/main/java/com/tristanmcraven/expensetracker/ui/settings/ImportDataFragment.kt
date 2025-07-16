@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
+import java.time.ZoneId
 
 class ImportDataFragment : Fragment() {
 
@@ -88,13 +89,16 @@ class ImportDataFragment : Fragment() {
                            val time = ie.time
                            //TODO implement white-man solution, get rid of ts ↓↓↓
                            val instant = Instant.parse(time.removeRange(time.length - 4, time.length) + "Z")
+                           val zone = ZoneId.systemDefault()
+                           val offset = zone.rules.getOffset(instant).totalSeconds
+                           val newInstant = instant.minusSeconds(offset.toLong())
                            Transaction(
                                id = 0,
                                name = ie.name,
                                amount = if (ie.type == "expense") -(ie.currency)
                                else ie.currency,
                                description = ie.description,
-                               timestamp = instant.toEpochMilli(),
+                               timestamp = newInstant.toEpochMilli(),
                                accountId = account?.id ?: 1
                            )
                        }
