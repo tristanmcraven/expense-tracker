@@ -171,10 +171,11 @@ class TransactionAdapter(
                 val amount = tx.amount
 
                 binding.textViewAmount.text = "${String.format("%.2f", amount)} ${GenericHelper.MainCurrencySymbol}"
-                binding.textViewAmount.setTextColor(
-                    ContextCompat.getColor(context, if (amount > 0) R.color.green else R.color.red)
-                )
-                if (amount < 0) {
+                if (amount > 0) {
+                    binding.textViewAmount.setTextColor(ContextCompat.getColor(context, R.color.green))
+                    binding.imageViewCategory.setImageResource(R.drawable.money)
+                } else {
+                    binding.textViewAmount.setTextColor(ContextCompat.getColor(context, R.color.red))
                     binding.imageViewCategory.setImageResource(R.drawable.money_red)
                 }
                 binding.textViewTransactionName.text = if (tx.name.isNullOrBlank()) "Transaction without name" else tx.name
